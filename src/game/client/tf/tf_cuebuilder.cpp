@@ -124,7 +124,7 @@ static void EnableCommand(IConVar *var, const char *pOldValue, float flOldValue)
 		GetCueBuilder()->StopCue();
 	}
 }
-ConVar tf2c_cues_enabled("tf2c_cues_enabled", "0", FCVAR_USERINFO | FCVAR_ARCHIVE, "Enable dynamic music", EnableCommand);
+ConVar tf2v_cues_enabled("tf2v_cues_enabled", "0", FCVAR_USERINFO | FCVAR_ARCHIVE, "Enable dynamic music", EnableCommand);
 
 void PlayCommand(const CCommand &args)
 {
@@ -133,13 +133,13 @@ void PlayCommand(const CCommand &args)
 	GetCueBuilder()->SetCurrentTrack(sName);
 	GetCueBuilder()->ResetAndStartCue();
 }
-ConCommand tf2c_cues_play("tf2c_cues_play", PlayCommand, "", FCVAR_DEVELOPMENTONLY);
+ConCommand tf2v_cues_play("tf2v_cues_play", PlayCommand, "", FCVAR_DEVELOPMENTONLY);
 
 void StopCommand(const CCommand &args)
 {
 	GetCueBuilder()->StopCue();
 }
-ConCommand tf2c_cues_stop("tf2c_cues_stop", StopCommand, "", FCVAR_DEVELOPMENTONLY);
+ConCommand tf2v_cues_stop("tf2v_cues_stop", StopCommand, "", FCVAR_DEVELOPMENTONLY);
 
 void SetSequenceCommand(const CCommand &args)
 {
@@ -148,20 +148,20 @@ void SetSequenceCommand(const CCommand &args)
 	GetCueBuilder()->GetCurrentTrack()->SetCurrentSeqID(ID);
 	GetCueBuilder()->GetCurrentTrack()->Play();
 }
-ConCommand tf2c_cues_setsequence("tf2c_cues_setsequence", SetSequenceCommand, "", FCVAR_DEVELOPMENTONLY);
+ConCommand tf2v_cues_setsequence("tf2v_cues_setsequence", SetSequenceCommand, "", FCVAR_DEVELOPMENTONLY);
 
 void SkipCommand(const CCommand &args)
 {
 	GetCueBuilder()->GetCurrentTrack()->SetShouldSkip(true);
 }
-ConCommand tf2c_cues_skipsequence("tf2c_cues_skipsequence", SkipCommand, "", FCVAR_DEVELOPMENTONLY);
+ConCommand tf2v_cues_skipsequence("tf2v_cues_skipsequence", SkipCommand, "", FCVAR_DEVELOPMENTONLY);
 
 void SetMoodCommand(const CCommand &args)
 {
 	int iMood = atoi(args[1]);
 	GetCueBuilder()->SetMood((CueMood)iMood);
 }
-ConCommand tf2c_cues_setmood("tf2c_cues_setmood", SetMoodCommand, "", FCVAR_DEVELOPMENTONLY);
+ConCommand tf2v_cues_setmood("tf2v_cues_setmood", SetMoodCommand, "", FCVAR_DEVELOPMENTONLY);
 
 
 //-----------------------------------------------------------------------------
@@ -222,7 +222,7 @@ void CTFCueBuilder::Update(float frametime)
 //-----------------------------------------------------------------------------
 void CTFCueBuilder::FireGameEvent( IGameEvent *event )
 {
-	if ( !tf2c_cues_enabled.GetBool() )
+	if ( !tf2v_cues_enabled.GetBool() )
 		return;
 
 	if ( !TFGameRules() )
@@ -319,7 +319,7 @@ void CTFCueBuilder::StartCue()
 {
 	CueTrack *pCurrentTrack = GetCurrentTrack();
 	DevMsg("Playing track %s\n", pCurrentTrack->GetTrackName());
-	if (!tf2c_cues_enabled.GetBool())
+	if (!tf2v_cues_enabled.GetBool())
 		return;
 	pCurrentTrack->StartPlaying();
 }

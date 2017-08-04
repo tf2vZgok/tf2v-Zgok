@@ -33,10 +33,10 @@ extern ConVar cl_autorezoom;
 extern ConVar cl_autoreload;
 extern ConVar cl_flipviewmodels;
 
-extern ConVar tf2c_setmerccolor_r;
-extern ConVar tf2c_setmerccolor_g;
-extern ConVar tf2c_setmerccolor_b;
-extern ConVar tf2c_setmercparticle;
+extern ConVar tf2v_setmerccolor_r;
+extern ConVar tf2v_setmerccolor_g;
+extern ConVar tf2v_setmerccolor_b;
+extern ConVar tf2v_setmercparticle;
 
 //-----------------------------------------------------------------------------
 // Purpose: 

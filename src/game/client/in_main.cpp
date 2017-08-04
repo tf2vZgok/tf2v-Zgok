@@ -69,7 +69,7 @@ ConVar cl_sidespeed( "cl_sidespeed", "400", FCVAR_CHEAT );
 ConVar cl_upspeed( "cl_upspeed", "320", FCVAR_ARCHIVE|FCVAR_CHEAT );
 ConVar cl_forwardspeed( "cl_forwardspeed", "400", FCVAR_ARCHIVE|FCVAR_CHEAT );
 ConVar cl_backspeed( "cl_backspeed", "400", FCVAR_ARCHIVE|FCVAR_CHEAT );
-#elif defined( TF_CLASSIC_CLIENT )
+#elif defined( TF_VINTAGE_CLIENT )
 // These values are below TF2 max speed of 520.
 // Live TF2 somehow ignores these values entirely when computing keyboard movement
 // yet you can still do precise movement with mouse and gamepad.
@@ -1637,7 +1637,7 @@ static ConCommand startgrenade2( "+grenade2", IN_Grenade2Down );
 static ConCommand startattack3("+attack3", IN_Attack3Down);
 static ConCommand endattack3("-attack3", IN_Attack3Up);
 
-#if defined(TF_CLIENT_DLL) || defined(TF_CLASSIC_CLIENT)
+#if defined(TF_CLIENT_DLL) || defined(TF_VINTAGE_CLIENT)
 static ConCommand toggle_duck( "toggle_duck", IN_DuckToggle );
 #endif
 

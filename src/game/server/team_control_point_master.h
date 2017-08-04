@@ -209,7 +209,7 @@ private:
 
 	COutputEvent m_OnWonByTeam1;
 	COutputEvent m_OnWonByTeam2;
-#if defined ( TF_CLASSIC )
+#if defined ( TF_VINTAGE )
 	COutputEvent m_OnWonByTeam3;
 	COutputEvent m_OnWonByTeam4;
 #endif

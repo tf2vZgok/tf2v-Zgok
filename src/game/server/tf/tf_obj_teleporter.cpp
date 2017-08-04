@@ -899,7 +899,7 @@ char *CObjectTeleporter::GetPlacementModel( void )
 //-----------------------------------------------------------------------------
 int CObjectTeleporter::GetMaxUpgradeLevel(void)
 {
-	return ( tf2c_building_upgrades.GetBool() ? 3 : 1 );
+	return ( tf2v_building_upgrades.GetBool() ? 3 : 1 );
 }
 
 //-----------------------------------------------------------------------------

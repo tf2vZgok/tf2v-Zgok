@@ -65,7 +65,7 @@ extern ConVar replay_rendersetting_renderglow;
 #include "econ_item_description.h"
 #endif
 
-#if defined ( TF_CLASSIC_CLIENT )
+#if defined ( TF_VINTAGE_CLIENT )
 #include "c_tf_player.h"
 #include "tf_gamerules.h"
 #endif
@@ -1077,7 +1077,7 @@ void ClientModeShared::FireGameEvent( IGameEvent *event )
 				}
 				else
 				{
-#ifdef TF_CLASSIC_CLIENT
+#ifdef TF_VINTAGE_CLIENT
 					if ( TFGameRules() && TFGameRules()->IsDeathmatch() && team > LAST_SHARED_TEAM )
 					{
 						g_pVGuiLocalize->ConstructString( wszLocalized, sizeof( wszLocalized ), g_pVGuiLocalize->Find( "#TF_DM_Joined" ), 1, wszPlayerName );

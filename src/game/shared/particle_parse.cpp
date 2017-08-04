@@ -18,7 +18,7 @@
 #include "networkstringtable_clientdll.h"
 #endif
 
-#if defined ( TF_CLASSIC_CLIENT )
+#if defined ( TF_VINTAGE_CLIENT )
 #include "tf_gamerules.h"
 #include "c_tf_playerresource.h"
 #endif
@@ -407,7 +407,7 @@ void DispatchParticleEffect( int iEffectIndex, Vector vecOrigin, Vector vecStart
 		data.m_fFlags |= PARTICLE_DISPATCH_FROM_ENTITY;
 		data.m_nDamageType = PATTACH_CUSTOMORIGIN;
 
-#if defined(TF_CLASSIC_CLIENT)
+#if defined(TF_VINTAGE_CLIENT)
 		if ( TFGameRules() && TFGameRules()->IsDeathmatch() )
 		{
 			C_TFPlayer *pPlayer = ToTFPlayer( pEntity );

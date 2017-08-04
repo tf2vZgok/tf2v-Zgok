@@ -35,7 +35,7 @@ struct animevent_t;
 
 extern ConVar object_verbose;
 extern ConVar obj_child_range_factor;
-extern ConVar tf2c_building_upgrades;
+extern ConVar tf2v_building_upgrades;
 
 #if defined( _DEBUG )
 #define TRACE_OBJECT( str )										\

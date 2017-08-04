@@ -26,7 +26,7 @@ using namespace vgui;
 
 DECLARE_BUILD_FACTORY( CTFImagePanel );
 
-extern ConVar tf2c_coloredhud;
+extern ConVar tf2v_coloredhud;
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -67,7 +67,7 @@ void CTFImagePanel::UpdateBGImage( void )
 	{
 		if ( TFGameRules() && TFGameRules()->IsDeathmatch() )
 		{
-			int iColorIndex = ( tf2c_coloredhud.GetBool() ? IMAGE_BG_EMPTY : IMAGE_BG_DEATHMATCH );
+			int iColorIndex = ( tf2v_coloredhud.GetBool() ? IMAGE_BG_EMPTY : IMAGE_BG_DEATHMATCH );
 			if ( m_szTeamBG[iColorIndex][0] != '\0' )
 			{
 				SetImage( m_szTeamBG[iColorIndex] );

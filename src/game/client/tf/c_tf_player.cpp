@@ -85,10 +85,10 @@ ConVar cl_autorezoom( "cl_autorezoom", "1", FCVAR_USERINFO | FCVAR_ARCHIVE, "Whe
 
 ConVar cl_autoreload( "cl_autoreload", "1",  FCVAR_USERINFO | FCVAR_ARCHIVE, "When set to 1, clip-using weapons will automatically be reloaded whenever they're not being fired." );
 
-ConVar tf2c_model_muzzleflash("tf2c_model_muzzleflash", "0", FCVAR_ARCHIVE, "Use the tf2 beta model based muzzleflash");
-ConVar tf2c_muzzlelight("tf2c_muzzlelight", "0", FCVAR_ARCHIVE, "Enable dynamic lights for muzzleflashes and the flamethrower");
+ConVar tf2v_model_muzzleflash("tf2v_model_muzzleflash", "0", FCVAR_ARCHIVE, "Use the tf2 beta model based muzzleflash");
+ConVar tf2v_muzzlelight("tf2v_muzzlelight", "0", FCVAR_ARCHIVE, "Enable dynamic lights for muzzleflashes and the flamethrower");
 
-ConVar tf2c_dev_mark( "tf2c_dev_mark", "1", FCVAR_ARCHIVE | FCVAR_USERINFO );
+ConVar tf2v_dev_mark( "tf2v_dev_mark", "1", FCVAR_ARCHIVE | FCVAR_USERINFO );
 
 static void OnMercParticleChange( IConVar *var, const char *pOldValue, float flOldValue )
 {
@@ -101,10 +101,10 @@ static void OnMercParticleChange( IConVar *var, const char *pOldValue, float flO
 	pLocalPlayer->m_Shared.SetRespawnParticleID( pCvar->GetInt() );
 }
 
-ConVar tf2c_setmerccolor_r( "tf2c_setmerccolor_r", "0", FCVAR_ARCHIVE | FCVAR_USERINFO, "Sets merc color's red channel value", true, 0, true, 255 );
-ConVar tf2c_setmerccolor_g( "tf2c_setmerccolor_g", "0", FCVAR_ARCHIVE | FCVAR_USERINFO, "Sets merc color's green channel value", true, 0, true, 255 );
-ConVar tf2c_setmerccolor_b( "tf2c_setmerccolor_b", "0", FCVAR_ARCHIVE | FCVAR_USERINFO, "Sets merc color's blue channel value", true, 0, true, 255 );
-ConVar tf2c_setmercparticle( "tf2c_setmercparticle", "1", FCVAR_ARCHIVE | FCVAR_USERINFO, "Sets merc's respawn particle index", OnMercParticleChange );
+ConVar tf2v_setmerccolor_r( "tf2v_setmerccolor_r", "0", FCVAR_ARCHIVE | FCVAR_USERINFO, "Sets merc color's red channel value", true, 0, true, 255 );
+ConVar tf2v_setmerccolor_g( "tf2v_setmerccolor_g", "0", FCVAR_ARCHIVE | FCVAR_USERINFO, "Sets merc color's green channel value", true, 0, true, 255 );
+ConVar tf2v_setmerccolor_b( "tf2v_setmerccolor_b", "0", FCVAR_ARCHIVE | FCVAR_USERINFO, "Sets merc color's blue channel value", true, 0, true, 255 );
+ConVar tf2v_setmercparticle( "tf2v_setmercparticle", "1", FCVAR_ARCHIVE | FCVAR_USERINFO, "Sets merc's respawn particle index", OnMercParticleChange );
 
 
 #define BDAY_HAT_MODEL		"models/effects/bday_hat.mdl"
@@ -1236,9 +1236,9 @@ public:
 		if ( !pC_BaseEntity )
 		{
 			// Assuming we're at the menus... Use cvar values.
-			float r = floorf( tf2c_setmerccolor_r.GetFloat() ) / 255.0f;
-			float g = floorf( tf2c_setmerccolor_g.GetFloat() ) / 255.0f;
-			float b = floorf( tf2c_setmerccolor_b.GetFloat() ) / 255.0f;
+			float r = floorf( tf2v_setmerccolor_r.GetFloat() ) / 255.0f;
+			float g = floorf( tf2v_setmerccolor_g.GetFloat() ) / 255.0f;
+			float b = floorf( tf2v_setmerccolor_b.GetFloat() ) / 255.0f;
 
 			m_pResult->SetVecValue( r, g, b );
 			return;
@@ -4139,10 +4139,10 @@ void C_TFPlayer::FireEvent( const Vector& origin, const QAngle& angles, int even
 // Shadows
 
 ConVar cl_blobbyshadows( "cl_blobbyshadows", "0", FCVAR_CLIENTDLL );
-extern ConVar tf2c_disable_player_shadows;
+extern ConVar tf2v_disable_player_shadows;
 ShadowType_t C_TFPlayer::ShadowCastType( void ) 
 {
-	if ( tf2c_disable_player_shadows.GetBool() )
+	if ( tf2v_disable_player_shadows.GetBool() )
 		return SHADOWS_NONE;
 
 	// Removed the GetPercentInvisible - should be taken care off in BindProxy now.

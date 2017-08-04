@@ -10,8 +10,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-ConVar tf2c_powerup_respawn_timer( "tf2c_powerup_respawn_timer", "1", FCVAR_ARCHIVE, "Show visual respawn timers for power-ups in Deathmatch." );
-ConVar tf2c_powerup_respawn_size( "tf2c_powerup_respawn_size", "40", FCVAR_CHEAT );
+ConVar tf2v_powerup_respawn_timer( "tf2v_powerup_respawn_timer", "1", FCVAR_ARCHIVE, "Show visual respawn timers for power-ups in Deathmatch." );
+ConVar tf2v_powerup_respawn_size( "tf2v_powerup_respawn_size", "40", FCVAR_CHEAT );
 
 class C_TFBaseDMPowerup : public C_BaseAnimating
 {
@@ -92,7 +92,7 @@ int C_TFBaseDMPowerup::DrawModel( int flags )
 {
 	int ret = BaseClass::DrawModel( flags );
 
-	if ( m_bRespawning && tf2c_powerup_respawn_timer.GetBool() )
+	if ( m_bRespawning && tf2v_powerup_respawn_timer.GetBool() )
 	{
 		if ( !m_pReturnProgressMaterial_Full )
 		{
@@ -111,7 +111,7 @@ int C_TFBaseDMPowerup::DrawModel( int flags )
 
 		CMatRenderContextPtr pRenderContext( materials );
 
-		float flSize = tf2c_powerup_respawn_size.GetFloat();
+		float flSize = tf2v_powerup_respawn_size.GetFloat();
 
 		Vector vOrigin = GetAbsOrigin()/* + Vector( 0, 0, flSize + 10 )*/;
 		QAngle vAngle = vec3_angle;

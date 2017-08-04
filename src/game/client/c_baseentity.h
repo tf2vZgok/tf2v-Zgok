@@ -1334,7 +1334,7 @@ public:
 	// Object model index
 	short							m_nModelIndex;
 
-#if defined( TF_CLIENT_DLL ) || defined( TF_CLASSIC_CLIENT )
+#if defined( TF_CLIENT_DLL ) || defined( TF_VINTAGE_CLIENT )
 	int								m_nModelIndexOverrides[MAX_VISION_MODES];
 #endif
 
@@ -1705,7 +1705,7 @@ protected:
 	color32 m_PreviousRenderColor;
 #endif
 
-#ifdef TF_CLASSIC_CLIENT
+#ifdef TF_VINTAGE_CLIENT
 public:
 	virtual const Vector	&GetItemTintColor( void ) { return vec3_origin; }
 	virtual C_BaseEntity	*GetItemTintColorOwner( void ) { return GetOwnerEntity(); }

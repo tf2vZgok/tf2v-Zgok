@@ -33,7 +33,7 @@
 #endif // REPLAY_ENABLED
 #endif
 
-#if defined( TF_CLASSIC_CLIENT ) || defined( TF_CLASSIC )
+#if defined( TF_VINTAGE_CLIENT ) || defined( TF_VINTAGE )
 #include "tf_gamerules.h"
 #endif
 
@@ -178,7 +178,7 @@ ConVar mp_respawnwavetime( "mp_respawnwavetime", "10.0", FCVAR_NOTIFY | FCVAR_RE
 ConVar mp_capdeteriorate_time( "mp_capdeteriorate_time", "90.0", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY, "Time it takes for a full capture point to deteriorate." );
 ConVar mp_tournament( "mp_tournament", "0", FCVAR_REPLICATED | FCVAR_NOTIFY );
 
-#if defined( TF_CLIENT_DLL ) || defined( TF_DLL ) || defined ( TF_CLASSIC_CLIENT ) || defined ( TF_CLASSIC )
+#if defined( TF_CLIENT_DLL ) || defined( TF_DLL ) || defined ( TF_VINTAGE_CLIENT ) || defined ( TF_VINTAGE )
 ConVar mp_highlander( "mp_highlander", "0", FCVAR_REPLICATED | FCVAR_NOTIFY, "Allow only 1 of each player class type." );
 #endif
 
@@ -1055,7 +1055,7 @@ void CTeamplayRoundBasedRules::CheckRestartRound( void )
 				{
 					pFormat = ( iRestartDelay > 1 ) ? "#game_scramble_in_secs" : "#game_scramble_in_sec";
 
-#if defined ( TF_DLL ) || defined ( TF_CLASSIC )
+#if defined ( TF_DLL ) || defined ( TF_VINTAGE )
 					IGameEvent *event = gameeventmanager->CreateEvent( "teamplay_alert" );
 					if ( event )
 					{
@@ -1120,7 +1120,7 @@ bool CTeamplayRoundBasedRules::CheckTimeLimit( bool bAllowEnd /*= true*/ )
 			bSwitchDueToTime = false;
 		}
 
-#ifdef TF_CLASSIC
+#ifdef TF_VINTAGE
 		if ( IsDeathmatch() == true )
 		{
 			bSwitchDueToTime = false;
@@ -1840,7 +1840,7 @@ void CTeamplayRoundBasedRules::State_Think_TEAM_WIN( void )
 {
 	if ( gpGlobals->curtime > m_flStateTransitionTime )
 	{
-#if defined( TF_DLL ) || defined ( TF_CLASSIC )
+#if defined( TF_DLL ) || defined ( TF_VINTAGE )
 		IGameEvent *event = gameeventmanager->CreateEvent( "scorestats_accumulated_update" );
 		if ( event )
 		{
@@ -2129,7 +2129,7 @@ void CTeamplayRoundBasedRules::State_Think_STALEMATE( void )
 		return;
 	}
 
-#if defined ( TF_CLASSIC )
+#if defined ( TF_VINTAGE )
 	// If a game has more than 2 active teams, the old function won't work.
 	// Which is why we had to replace it with this one.
 	CUtlVector< CTeam* > pAliveTeams;
@@ -2491,7 +2491,7 @@ void CTeamplayRoundBasedRules::SetWinningTeam( int team, int iWinReason, bool bF
 		if ( nWinDelta >= mp_scrambleteams_auto_windifference.GetInt() )
 		{
 			// Let the server know we're going to scramble on round restart
-#if defined( TF_DLL ) || defined ( TF_CLASSIC )
+#if defined( TF_DLL ) || defined ( TF_VINTAGE )
 			IGameEvent *event = gameeventmanager->CreateEvent( "teamplay_alert" );
 			if ( event )
 			{
@@ -3078,7 +3078,7 @@ void CTeamplayRoundBasedRules::CheckRespawnWaves( void )
 //-----------------------------------------------------------------------------
 void CTeamplayRoundBasedRules::BalanceTeams( bool bRequireSwitcheesToBeDead )
 {
-#ifdef TF_CLASSIC
+#ifdef TF_VINTAGE
 	// No team balancing in DM since everybody should be on RED.
 	if ( IsDeathmatch() )
 	{
@@ -3296,7 +3296,7 @@ void CTeamplayRoundBasedRules::ResetScores( void )
 	m_bResetRoundsPlayed = true;
 	//m_flStopWatchTime = -1.0f;
 
-#if defined( TF_DLL ) || defined ( TF_CLASSIC )
+#if defined( TF_DLL ) || defined ( TF_VINTAGE )
 	IGameEvent *event = gameeventmanager->CreateEvent( "scorestats_accumulated_reset" );
 	if ( event )
 	{
@@ -3464,7 +3464,7 @@ string_t CTeamplayRoundBasedRules::GetLastPlayedRound( void )
 //-----------------------------------------------------------------------------
 CTeamRoundTimer *CTeamplayRoundBasedRules::GetActiveRoundTimer( void )
 {
-#if defined( TF_DLL ) || defined ( TF_CLASSIC )
+#if defined( TF_DLL ) || defined ( TF_VINTAGE )
 	int iTimerEntIndex = ObjectiveResource()->GetTimerInHUD();
 	return ( dynamic_cast<CTeamRoundTimer *>( UTIL_EntityByIndex( iTimerEntIndex ) ) );
 #else
@@ -3513,7 +3513,7 @@ bool CTeamplayRoundBasedRules::IsInTournamentMode( void )
 //-----------------------------------------------------------------------------
 bool CTeamplayRoundBasedRules::IsInHighlanderMode( void )
 {
-#if defined( TF_CLIENT_DLL ) || defined( TF_DLL ) || defined ( TF_CLASSIC_CLIENT ) || defined ( TF_CLASSIC )
+#if defined( TF_CLIENT_DLL ) || defined( TF_DLL ) || defined ( TF_VINTAGE_CLIENT ) || defined ( TF_VINTAGE )
 	// can't use highlander mode and the queue system
 	if ( IsInArenaMode() == true && tf_arena_use_queue.GetBool() == true )
 		return false;
@@ -3592,7 +3592,7 @@ bool CTeamplayRoundBasedRules::WouldChangeUnbalanceTeams( int iNewTeam, int iCur
 
 	CTeam *pTeam;
 
-#if defined( TF_CLASSIC ) || defined( TF_CLASSIC_CLIENT )
+#if defined( TF_VINTAGE ) || defined( TF_VINTAGE_CLIENT )
 	int iTeamCount = GetNumberOfTeams();
 	if (TFGameRules())
 		iTeamCount = TFGameRules()->IsFourTeamGame() ? 5 : 3;
@@ -3643,7 +3643,7 @@ bool CTeamplayRoundBasedRules::AreTeamsUnbalanced( int &iHeaviestTeam, int &iLig
 
 	int i = FIRST_GAME_TEAM;
 
-#if defined( TF_CLASSIC ) || defined( TF_CLASSIC_CLIENT )
+#if defined( TF_VINTAGE ) || defined( TF_VINTAGE_CLIENT )
 	int iTeamCount = GetNumberOfTeams();
 	if (TFGameRules())
 		iTeamCount = TFGameRules()->IsFourTeamGame() ? 5 : 3;

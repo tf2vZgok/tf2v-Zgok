@@ -75,9 +75,6 @@ static int g_TauntCamAchievements[] =
 	0,		// TF_CLASS_SPY,
 	0,		// TF_CLASS_ENGINEER,
 
-	0,		// TF_CLASS_CIVILIAN,
-	0,		// TF_CLASS_MERCENARY,
-	0,		// TF_CLASS_COUNT_ALL,
 };
 
 extern ConVar mp_capstyle;
@@ -89,9 +86,9 @@ ConVar tf_caplinear( "tf_caplinear", "1", FCVAR_REPLICATED | FCVAR_DEVELOPMENTON
 ConVar tf_stalematechangeclasstime( "tf_stalematechangeclasstime", "20", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY, "Amount of time that players are allowed to change class in stalemates." );
 ConVar tf_birthday( "tf_birthday", "0", FCVAR_NOTIFY | FCVAR_REPLICATED );
 
-// TF2C specific cvars.
-ConVar tf2c_falldamage_disablespread( "tf2c_falldamage_disablespread", "0", FCVAR_REPLICATED | FCVAR_NOTIFY, "Toggles random 20% fall damage spread." );
-ConVar tf2c_allow_thirdperson( "tf2c_allow_thirdperson", "0", FCVAR_NOTIFY | FCVAR_REPLICATED, "Allow players to switch to third person mode." );
+// tf2v specific cvars.
+ConVar tf2v_falldamage_disablespread( "tf2v_falldamage_disablespread", "0", FCVAR_REPLICATED | FCVAR_NOTIFY, "Toggles random 20% fall damage spread." );
+ConVar tf2v_allow_thirdperson( "tf2v_allow_thirdperson", "0", FCVAR_NOTIFY | FCVAR_REPLICATED, "Allow players to switch to third person mode." );
 
 #ifdef GAME_DLL
 // TF overrides the default value of this convar
@@ -105,7 +102,6 @@ ConVar tf_gamemode_rd( "tf_gamemode_rd", "0" , FCVAR_NOTIFY | FCVAR_REPLICATED |
 ConVar tf_gamemode_payload( "tf_gamemode_payload", "0" , FCVAR_NOTIFY | FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY );
 ConVar tf_gamemode_mvm( "tf_gamemode_mvm", "0" , FCVAR_NOTIFY | FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY );
 ConVar tf_gamemode_passtime( "tf_gamemode_passtime", "0" , FCVAR_NOTIFY | FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY );
-ConVar tf_gamemode_dm( "tf_gamemode_dm", "0" , FCVAR_NOTIFY | FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY );
 
 ConVar tf_teamtalk( "tf_teamtalk", "1", FCVAR_NOTIFY, "Teammates can always chat with each other whether alive or dead." );
 ConVar tf_ctf_bonus_time( "tf_ctf_bonus_time", "10", FCVAR_NOTIFY, "Length of team crit time for CTF capture." );
@@ -1194,8 +1190,8 @@ int	CTFGameRules::Damage_GetShouldNotBleed( void )
 }
 
 #ifdef GAME_DLL
-unsigned char g_aAuthDataKey[8] = TF2C_AUTHDATA_KEY;
-unsigned char g_aAuthDataXOR[8] = TF2C_AUTHDATA_XOR;
+unsigned char g_aAuthDataKey[8] = tf2v_AUTHDATA_KEY;
+unsigned char g_aAuthDataXOR[8] = tf2v_AUTHDATA_XOR;
 #endif
 
 //-----------------------------------------------------------------------------
@@ -1246,7 +1242,7 @@ CTFGameRules::CTFGameRules()
 	unsigned char szPassword[8];
 	V_memcpy(szPassword, g_aAuthDataKey, sizeof(szPassword));
 	for (unsigned int i = 0; i < sizeof(szPassword); ++i)
-		szPassword[i] ^= g_aAuthDataXOR[i] ^ TF2C_AUTHDATA_BYTE;
+		szPassword[i] ^= g_aAuthDataXOR[i] ^ tf2v_AUTHDATA_BYTE;
 
 	m_pAuthData = ReadEncryptedKVFile(filesystem, "scripts/authdata", szPassword, true);
 	V_memset(szPassword, 0x00, sizeof(szPassword));
@@ -1397,17 +1393,6 @@ void CTFGameRules::Activate()
 	tf_gamemode_mvm.SetValue( 0 );
 	tf_gamemode_rd.SetValue( 0 );
 	tf_gamemode_passtime.SetValue( 0 );
-	tf_gamemode_dm.SetValue( 0 );
-
-	if ( gEntList.FindEntityByClassname( NULL, "tf_logic_deathmatch" ) || !Q_strncmp(STRING(gpGlobals->mapname), "dm_", 3) )
-	{
-		m_nGameType.Set( TF_GAMETYPE_DM );
-		tf_gamemode_dm.SetValue( 1 );
-		Msg( "Executing server deathmatch config file\n", 1 );
-		engine->ServerCommand( "exec config_deathmatch.cfg \n" );
-		engine->ServerExecute();
-		return;
-	}
 
 	CArenaLogic *pArena = dynamic_cast<CArenaLogic*>( gEntList.FindEntityByClassname( NULL, "tf_logic_arena") );
 	if ( pArena )
@@ -1469,7 +1454,7 @@ void CTFGameRules::Activate()
 	}
 }
 
-extern ConVar tf2c_allow_special_classes;
+extern ConVar tf2v_allow_special_classes;
 
 int CTFGameRules::GetClassLimit( int iDesiredClassIndex, int iTeam )
 {
@@ -1519,7 +1504,7 @@ int CTFGameRules::GetClassLimit( int iDesiredClassIndex, int iTeam )
 	}
 	else if (iDesiredClassIndex == TF_CLASS_CIVILIAN)
 	{
-		if (!tf2c_allow_special_classes.GetBool())
+		if (!tf2v_allow_special_classes.GetBool())
 			return 1;
 		else
 			return -1;
@@ -3038,14 +3023,14 @@ void CTFGameRules::ClientSettingsChanged( CBasePlayer *pPlayer )
 	pTFPlayer->SetFlipViewModel( Q_atoi( engine->GetClientConVarValue( pPlayer->entindex(), "cl_flipviewmodels" ) ) > 0 );
 
 	// Keep track of their spawn particle.
-	pTFPlayer->m_Shared.SetRespawnParticleID( Q_atoi( engine->GetClientConVarValue( pPlayer->entindex(), "tf2c_setmercparticle" ) ) );
+	pTFPlayer->m_Shared.SetRespawnParticleID( Q_atoi( engine->GetClientConVarValue( pPlayer->entindex(), "tf2v_setmercparticle" ) ) );
 
 	const char *pszFov = engine->GetClientConVarValue( pPlayer->entindex(), "fov_desired" );
 	int iFov = atoi( pszFov );
 	iFov = clamp( iFov, 75, MAX_FOV );
 	pTFPlayer->SetDefaultFOV( iFov );
 
-	pTFPlayer->m_bIsPlayerADev = pTFPlayer->PlayerHasPowerplay() && ( Q_atoi( engine->GetClientConVarValue( pPlayer->entindex(), "tf2c_dev_mark" ) ) > 0 );
+	pTFPlayer->m_bIsPlayerADev = pTFPlayer->PlayerHasPowerplay() && ( Q_atoi( engine->GetClientConVarValue( pPlayer->entindex(), "tf2v_dev_mark" ) ) > 0 );
 }
 
 static const char *g_aTaggedConVars[] =
@@ -3068,31 +3053,31 @@ static const char *g_aTaggedConVars[] =
 	"tf_use_fixed_weaponspreads",
 	"nospread",
 
-	"tf2c_force_stock_weapons",
+	"tf2v_force_stock_weapons",
 	"stockweapons",
 
-	"tf2c_allow_thirdperson",
+	"tf2v_allow_thirdperson",
 	"thirdperson",
 
-	"tf2c_random_weapons",
+	"tf2v_random_weapons",
 	"randomizer",
 
-	"tf2c_autojump",
+	"tf2v_autojump",
 	"autojump",
 
-	"tf2c_duckjump",
+	"tf2v_duckjump",
 	"duckjump",
 
-	"tf2c_allow_special_classes",
+	"tf2v_allow_special_classes",
 	"specialclasses",
 
-	"tf2c_airblast",
+	"tf2v_airblast",
 	"noairblast",
 
-	"tf2c_building_hauling",
+	"tf2v_building_hauling",
 	"nohauling",
 
-	"tf2c_building_upgrades",
+	"tf2v_building_upgrades",
 	"nobuildingupgrades",
 
 	"mp_highlander",
@@ -3742,7 +3727,7 @@ float CTFGameRules::FlPlayerFallDamage( CBasePlayer *pPlayer )
 		float flRatio = (float)pPlayer->GetMaxHealth() / 100.0;
 		flFallDamage *= flRatio;
 
-		if ( tf2c_falldamage_disablespread.GetBool() == false )
+		if ( tf2v_falldamage_disablespread.GetBool() == false )
 		{
 			flFallDamage *= random->RandomFloat( 0.8, 1.2 );
 		}
@@ -4739,7 +4724,7 @@ bool CTFGameRules::AllowThirdPersonCamera( void )
 	}
 #endif
 
-	return tf2c_allow_thirdperson.GetBool();
+	return tf2v_allow_thirdperson.GetBool();
 }
 
 //-----------------------------------------------------------------------------
@@ -5277,31 +5262,31 @@ const char *CTFGameRules::GetGameDescription(void)
 	switch (m_nGameType)
 	{
 		case TF_GAMETYPE_CTF:
-			return "TF2C (CTF)";
+			return "tf2v (CTF)";
 			break;
 		case TF_GAMETYPE_CP:
 			if ( IsInKothMode() )
-				return "TF2C (Koth)";
+				return "tf2v (Koth)";
 
-			return "TF2C (CP)";
+			return "tf2v (CP)";
 			break;
 		case TF_GAMETYPE_ESCORT:
-			return "TF2C (Payload)";
+			return "tf2v (Payload)";
 			break;
 		case TF_GAMETYPE_ARENA:
-			return "TF2C (Arena)";
+			return "tf2v (Arena)";
 			break;
 		case TF_GAMETYPE_DM:
-			return "TF2C (Deathmatch)";
+			return "tf2v (Deathmatch)";
 			break;
 		case TF_GAMETYPE_VIP:
-			return "TF2C (Hunted)";
+			return "tf2v (Hunted)";
 			break;
 		case TF_GAMETYPE_MVM:
 			return "Implying we will ever have this";
 			break;
 		default:
-			return "TF2C";
+			return "tf2v";
 			break;
 	}
 }

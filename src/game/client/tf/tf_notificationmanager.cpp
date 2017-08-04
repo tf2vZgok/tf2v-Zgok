@@ -18,9 +18,9 @@
 
 const char *g_aRequestURLs[REQUEST_COUNT] =
 {
-	"http://services.0x13.io/tf2c/version/?latest=1",
-	"http://services.0x13.io/tf2c/motd/",
-	"http://services.0x13.io/tf2c/servers/official/"
+	"http://services.0x13.io/tf2v/version/?latest=1",
+	"http://services.0x13.io/tf2v/motd/",
+	"http://services.0x13.io/tf2v/servers/official/"
 };
 
 MessageNotification::MessageNotification()
@@ -70,19 +70,19 @@ CTFNotificationManager *GetNotificationManager()
 	return &g_TFNotificationManager;
 }
 
-CON_COMMAND_F( tf2c_checkmessages, "Check for the messages", FCVAR_DEVELOPMENTONLY )
+CON_COMMAND_F( tf2v_checkmessages, "Check for the messages", FCVAR_DEVELOPMENTONLY )
 {
 	GetNotificationManager()->CheckVersionAndMessages();
 }
 
-CON_COMMAND_F( tf2c_updateserverlist, "Check for the messages", FCVAR_DEVELOPMENTONLY )
+CON_COMMAND_F( tf2v_updateserverlist, "Check for the messages", FCVAR_DEVELOPMENTONLY )
 {
 	GetNotificationManager()->UpdateServerlistInfo();
 }
 
-ConVar tf2c_checkfrequency( "tf2c_checkfrequency", "900", FCVAR_DEVELOPMENTONLY, "Messages check frequency (seconds)" );
-ConVar tf2c_updatefrequency( "tf2c_updatefrequency", "15", FCVAR_DEVELOPMENTONLY, "Updatelist update frequency (seconds)" );
-ConVar tf2c_latest_notification( "tf2c_latest_notification", "0", FCVAR_ARCHIVE );
+ConVar tf2v_checkfrequency( "tf2v_checkfrequency", "900", FCVAR_DEVELOPMENTONLY, "Messages check frequency (seconds)" );
+ConVar tf2v_updatefrequency( "tf2v_updatefrequency", "15", FCVAR_DEVELOPMENTONLY, "Updatelist update frequency (seconds)" );
+ConVar tf2v_latest_notification( "tf2v_latest_notification", "0", FCVAR_ARCHIVE );
 
 //-----------------------------------------------------------------------------
 // Purpose: constructor
@@ -112,8 +112,8 @@ bool CTFNotificationManager::Init()
 		m_SteamHTTP = steamapicontext->SteamHTTP();
 		SetDefLessFunc( m_Requests );
 		SetDefLessFunc( m_Servers );
-		m_flLastCheck = tf2c_checkfrequency.GetFloat() * -1;
-		m_flUpdateLastCheck = tf2c_updatefrequency.GetFloat() * -1;
+		m_flLastCheck = tf2v_checkfrequency.GetFloat() * -1;
+		m_flUpdateLastCheck = tf2v_updatefrequency.GetFloat() * -1;
 		m_iCurrentRequest = REQUEST_IDLE;
 		m_bCompleted = false;
 		m_bOutdated = false;
@@ -123,7 +123,7 @@ bool CTFNotificationManager::Init()
 		m_hRequest = 0;
 		MatchMakingKeyValuePair_t filter;
 		Q_strncpy( filter.m_szKey, "gamedir", sizeof( filter.m_szKey ) );
-		Q_strncpy( filter.m_szValue, "tf2classic", sizeof( filter.m_szKey ) ); // change "tf2classic" to engine->GetGameDirectory() before the release
+		Q_strncpy( filter.m_szValue, "tf2vintage", sizeof( filter.m_szKey ) ); // change "tf2vlassic" to engine->GetGameDirectory() before the release
 		m_ServerFilters.AddToTail( filter );
 
 		if ( MAINMENU_ROOT )
@@ -140,13 +140,13 @@ void CTFNotificationManager::Update( float frametime )
 	if ( !MAINMENU_ROOT )
 		return;
 
-	if ( gpGlobals->curtime - m_flLastCheck > tf2c_checkfrequency.GetFloat() )
+	if ( gpGlobals->curtime - m_flLastCheck > tf2v_checkfrequency.GetFloat() )
 	{
 		m_flLastCheck = gpGlobals->curtime;
 		CheckVersionAndMessages();
 	}
 
-	if ( !MAINMENU_ROOT->InGame() && gpGlobals->curtime - m_flUpdateLastCheck > tf2c_updatefrequency.GetFloat() )
+	if ( !MAINMENU_ROOT->InGame() && gpGlobals->curtime - m_flUpdateLastCheck > tf2v_updatefrequency.GetFloat() )
 	{
 		m_flUpdateLastCheck = gpGlobals->curtime;
 		UpdateServerlistInfo();
@@ -296,13 +296,13 @@ void CTFNotificationManager::OnMessageCheckCompleted( const char *pszPage )
 	}
 
 	// ConVar does not support int64 so we have to work around it.
-	time_t timePrevious = V_atoi64( tf2c_latest_notification.GetString() );
+	time_t timePrevious = V_atoi64( tf2v_latest_notification.GetString() );
 	time_t timeNew = V_atoi64( TF_NOTIFICATION_TEST_TIME );
 
 	if ( timeNew <= timePrevious ) // Already viewed this one.
 		return;
 
-	tf2c_latest_notification.SetValue( TF_NOTIFICATION_TEST_TIME );
+	tf2v_latest_notification.SetValue( TF_NOTIFICATION_TEST_TIME );
 
 	char szTitle[TF_NOTIFICATION_TITLE_SIZE];
 	char szMessage[TF_NOTIFICATION_MESSAGE_SIZE];

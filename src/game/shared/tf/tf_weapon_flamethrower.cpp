@@ -58,13 +58,13 @@
 #define TF_FLAMETHROWER_AMMO_PER_SECONDARY_ATTACK	20
 
 #ifdef CLIENT_DLL
-	extern ConVar tf2c_muzzlelight;
+	extern ConVar tf2v_muzzlelight;
 #endif
 
-ConVar  tf2c_airblast( "tf2c_airblast", "1", FCVAR_NOTIFY | FCVAR_REPLICATED, "Enable/Disable the Airblast function of the Flamethrower." );
-ConVar  tf2c_airblast_players( "tf2c_airblast_players", "1", FCVAR_NOTIFY | FCVAR_REPLICATED, "Enable/Disable the Airblast pushing players." );
+ConVar  tf2v_airblast( "tf2v_airblast", "1", FCVAR_NOTIFY | FCVAR_REPLICATED, "Enable/Disable the Airblast function of the Flamethrower." );
+ConVar  tf2v_airblast_players( "tf2v_airblast_players", "1", FCVAR_NOTIFY | FCVAR_REPLICATED, "Enable/Disable the Airblast pushing players." );
 #ifdef GAME_DLL
-ConVar	tf2c_debug_airblast( "tf2c_debug_airblast", "0", FCVAR_CHEAT | FCVAR_DEVELOPMENTONLY, "Visualize airblast box." );
+ConVar	tf2v_debug_airblast( "tf2v_debug_airblast", "0", FCVAR_CHEAT | FCVAR_DEVELOPMENTONLY, "Visualize airblast box." );
 #endif
 
 IMPLEMENT_NETWORKCLASS_ALIASED( TFFlameThrower, DT_WeaponFlameThrower )
@@ -384,7 +384,7 @@ void CTFFlameThrower::PrimaryAttack()
 
 #ifdef CLIENT_DLL
 	// Handle the flamethrower light
-	if (tf2c_muzzlelight.GetBool())
+	if (tf2v_muzzlelight.GetBool())
 	{
 		dlight_t *dl = effects->CL_AllocDlight(LIGHT_INDEX_MUZZLEFLASH + index);
 		dl->origin = vecMuzzlePos;
@@ -487,7 +487,7 @@ void CTFFlameThrower::PrimaryAttack()
 //-----------------------------------------------------------------------------
 void CTFFlameThrower::SecondaryAttack()
 {
-	if ( !tf2c_airblast.GetBool() )
+	if ( !tf2v_airblast.GetBool() )
 		return;
 
 	int iNoAirblast = 0;
@@ -544,7 +544,7 @@ void CTFFlameThrower::SecondaryAttack()
 
 	int count = UTIL_EntitiesInBox( pList, 64, vecOrigin - vecBlastSize, vecOrigin + vecBlastSize, 0 );
 
-	if ( tf2c_debug_airblast.GetBool() )
+	if ( tf2v_debug_airblast.GetBool() )
 	{
 		NDebugOverlay::Box( vecOrigin, -vecBlastSize, vecBlastSize, 0, 0, 255, 100, 2.0 );
 	}
@@ -638,7 +638,7 @@ void CTFFlameThrower::DeflectPlayer( CTFPlayer *pVictim, CTFPlayer *pAttacker, V
 			CTF_GameStats.Event_PlayerAwardBonusPoints( pAttacker, pVictim, 1 );
 		}
 	}
-	else if ( tf2c_airblast_players.GetBool() )
+	else if ( tf2v_airblast_players.GetBool() )
 	{
 		// Don't push players if they're too far off to the side. Ignore Z.
 		Vector vecVictimDir = pVictim->WorldSpaceCenter() - pAttacker->WorldSpaceCenter();

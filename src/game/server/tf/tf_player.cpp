@@ -108,13 +108,13 @@ extern ConVar sv_alltalk;
 extern ConVar tf_teamtalk;
 
 // Team Fortress 2 Classic commands
-ConVar tf2c_random_weapons( "tf2c_random_weapons", "0", FCVAR_NOTIFY, "Makes players spawn with random loadout. CURRENTLY BROKEN!!!" );
+ConVar tf2v_random_weapons( "tf2v_random_weapons", "0", FCVAR_NOTIFY, "Makes players spawn with random loadout. CURRENTLY BROKEN!!!" );
 
 
-ConVar tf2c_allow_special_classes( "tf2c_allow_special_classes", "0", FCVAR_NOTIFY, "Enables gamemode specific classes (Civilian, Mercenary, ...) in normal gameplay." );
-ConVar tf2c_force_stock_weapons( "tf2c_force_stock_weapons", "0", FCVAR_NOTIFY, "Forces players to use the stock loadout." );
-ConVar tf2c_legacy_weapons( "tf2c_legacy_weapons", "0", FCVAR_DEVELOPMENTONLY, "Disables all new weapons as well as Econ Item System." );
-ConVar tf2c_dm_spawnprotecttime( "tf2c_dm_spawnprotecttime", "5", FCVAR_REPLICATED | FCVAR_NOTIFY, "Time (in seconds) that the DM spawn protection lasts" );
+ConVar tf2v_allow_special_classes( "tf2v_allow_special_classes", "0", FCVAR_NOTIFY, "Enables gamemode specific classes (Civilian, Mercenary, ...) in normal gameplay." );
+ConVar tf2v_force_stock_weapons( "tf2v_force_stock_weapons", "0", FCVAR_NOTIFY, "Forces players to use the stock loadout." );
+ConVar tf2v_legacy_weapons( "tf2v_legacy_weapons", "0", FCVAR_DEVELOPMENTONLY, "Disables all new weapons as well as Econ Item System." );
+ConVar tf2v_dm_spawnprotecttime( "tf2v_dm_spawnprotecttime", "5", FCVAR_REPLICATED | FCVAR_NOTIFY, "Time (in seconds) that the DM spawn protection lasts" );
 
 // -------------------------------------------------------------------------------- //
 // Player animation event. Sent to the client when a player fires, jumps, reloads, etc..
@@ -965,7 +965,7 @@ void CTFPlayer::Spawn()
 
 		if ( TFGameRules()->IsDeathmatch() )
 		{
-			m_Shared.AddCond( TF_COND_INVULNERABLE_SPAWN_PROTECT, tf2c_dm_spawnprotecttime.GetFloat() );
+			m_Shared.AddCond( TF_COND_INVULNERABLE_SPAWN_PROTECT, tf2v_dm_spawnprotecttime.GetFloat() );
 		}
 
 		if ( !m_bSeenRoundInfo )
@@ -1205,9 +1205,9 @@ void CTFPlayer::GiveDefaultItems()
 	}
 
 	// Give weapons.
-	if ( tf2c_random_weapons.GetBool() )
+	if ( tf2v_random_weapons.GetBool() )
 		ManageRandomWeapons( pData );
-	else if ( tf2c_legacy_weapons.GetBool() )
+	else if ( tf2v_legacy_weapons.GetBool() )
 		ManageRegularWeaponsLegacy( pData );
 	else
 		ManageRegularWeapons( pData );
@@ -1577,7 +1577,7 @@ CEconItemView *CTFPlayer::GetLoadoutItem( int iClass, int iSlot )
 {
 	int iPreset = m_WeaponPreset[iClass][iSlot];
 
-	if ( tf2c_force_stock_weapons.GetBool() )
+	if ( tf2v_force_stock_weapons.GetBool() )
 		iPreset = 0;
 
 	return GetTFInventory()->GetItem( iClass, iSlot, iPreset );
@@ -2374,7 +2374,7 @@ void CTFPlayer::HandleCommand_JoinClass( const char *pClassName )
 	if ( stricmp( pClassName, "random" ) != 0 )
 	{
 		// Allow players to join the mercenary and civilian class if the cvar is enabled
-		int iLastClass = tf2c_allow_special_classes.GetBool() ? TF_CLASS_COUNT : TF_LAST_NORMAL_CLASS;
+		int iLastClass = tf2v_allow_special_classes.GetBool() ? TF_CLASS_COUNT : TF_LAST_NORMAL_CLASS;
 
 		int i = 0;
 
@@ -2996,16 +2996,16 @@ bool CTFPlayer::ClientCommand( const CCommand &args )
 			}
 		}*/
 	}
-	/*else if (FStrEq(pcmd, "tf2c_4play"))
+	/*else if (FStrEq(pcmd, "tf2v_4play"))
 	{
 		if (args.ArgC() < 2)
 		{
-			tf2c_4play.GetBool();
+			tf2v_4play.GetBool();
 			//Warning("4 Team Gameplay is currently %s", )
 			//return;
 		}
 
-		//tf2c_4play.SetValue()
+		//tf2v_4play.SetValue()
 		return true;
 	}*/
 
@@ -8374,9 +8374,9 @@ void CTFPlayer::UpdatePlayerColor( void )
 
 	// Update color from their convars
 	Vector vecNewColor;
-	vecNewColor.x = V_atoi( engine->GetClientConVarValue( entindex(), "tf2c_setmerccolor_r" ) ) / 255.0f;
-	vecNewColor.y = V_atoi( engine->GetClientConVarValue( entindex(), "tf2c_setmerccolor_g" ) ) / 255.0f;
-	vecNewColor.z = V_atoi( engine->GetClientConVarValue( entindex(), "tf2c_setmerccolor_b" ) ) / 255.0f;
+	vecNewColor.x = V_atoi( engine->GetClientConVarValue( entindex(), "tf2v_setmerccolor_r" ) ) / 255.0f;
+	vecNewColor.y = V_atoi( engine->GetClientConVarValue( entindex(), "tf2v_setmerccolor_g" ) ) / 255.0f;
+	vecNewColor.z = V_atoi( engine->GetClientConVarValue( entindex(), "tf2v_setmerccolor_b" ) ) / 255.0f;
 
 	m_vecPlayerColor = vecNewColor;
 }

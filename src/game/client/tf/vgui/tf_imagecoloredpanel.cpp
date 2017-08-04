@@ -28,7 +28,7 @@ using namespace vgui;
 
 DECLARE_BUILD_FACTORY( CTFImageColoredPanel );
 
-extern ConVar tf2c_coloredhud;
+extern ConVar tf2v_coloredhud;
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -45,7 +45,7 @@ void CTFImageColoredPanel::PaintBackground()
 	C_TF_PlayerResource *tf_PR = dynamic_cast<C_TF_PlayerResource *>(g_PR);
 
 	//disable for deathmatch for now
-	if (!tf_PR || !tf2c_coloredhud.GetBool() || !TFGameRules() || !TFGameRules()->IsDeathmatch())
+	if (!tf_PR || !tf2v_coloredhud.GetBool() || !TFGameRules() || !TFGameRules()->IsDeathmatch())
 	{
 		SetDrawColor(Color(0, 0, 0, 0));
 	}

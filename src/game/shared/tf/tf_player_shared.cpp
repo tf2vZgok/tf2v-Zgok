@@ -50,12 +50,12 @@ ConVar tf_spy_invis_unstealth_time( "tf_spy_invis_unstealth_time", "2.0", FCVAR_
 
 ConVar tf_spy_max_cloaked_speed( "tf_spy_max_cloaked_speed", "999", FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED );	// no cap
 ConVar tf_max_health_boost( "tf_max_health_boost", "1.5", FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED, "Max health factor that players can be boosted to by healers.", true, 1.0, false, 0 );
-ConVar tf2c_dm_max_health_boost( "tf2c_dm_max_health_boost", "2.0", FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED, "Max health factor that players can be boosted to by overheal pickups.", true, 1.0, false, 0 );
+ConVar tf2v_dm_max_health_boost( "tf2v_dm_max_health_boost", "2.0", FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED, "Max health factor that players can be boosted to by overheal pickups.", true, 1.0, false, 0 );
 ConVar tf_invuln_time( "tf_invuln_time", "1.0", FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED, "Time it takes for invulnerability to wear off." );
 
 #ifdef GAME_DLL
 ConVar tf_boost_drain_time( "tf_boost_drain_time", "15.0", FCVAR_DEVELOPMENTONLY, "Time it takes for a full health boost to drain away from a player.", true, 0.1, false, 0 );
-ConVar tf2c_dm_boost_drain_time( "tf2c_dm_boost_drain_time", "30.0", FCVAR_DEVELOPMENTONLY, "Time it takes for a full health boost to drain away from a player in Deathmatch.", true, 0.1, false, 0 );
+ConVar tf2v_dm_boost_drain_time( "tf2v_dm_boost_drain_time", "30.0", FCVAR_DEVELOPMENTONLY, "Time it takes for a full health boost to drain away from a player in Deathmatch.", true, 0.1, false, 0 );
 ConVar tf_debug_bullets( "tf_debug_bullets", "0", FCVAR_DEVELOPMENTONLY, "Visualize bullet traces." );
 ConVar tf_damage_events_track_for( "tf_damage_events_track_for", "30", FCVAR_DEVELOPMENTONLY );
 #endif
@@ -76,8 +76,8 @@ ConVar tf_always_loser( "tf_always_loser", "0", FCVAR_REPLICATED | FCVAR_CHEAT, 
 ConVar sv_showimpacts( "sv_showimpacts", "0", FCVAR_REPLICATED, "Shows client (red) and server (blue) bullet impact point (1=both, 2=client-only, 3=server-only)" );
 ConVar sv_showplayerhitboxes( "sv_showplayerhitboxes", "0", FCVAR_REPLICATED, "Show lag compensated hitboxes for the specified player index whenever a player fires." );
 
-ConVar tf2c_building_hauling( "tf2c_building_hauling", "1", FCVAR_NOTIFY | FCVAR_REPLICATED, "Toggle Engineer's building hauling ability." );
-ConVar tf2c_disable_player_shadows( "tf2c_disable_player_shadows", "0", FCVAR_REPLICATED, "Disables rendering of player shadows regardless of client's graphical settings." );
+ConVar tf2v_building_hauling( "tf2v_building_hauling", "1", FCVAR_NOTIFY | FCVAR_REPLICATED, "Toggle Engineer's building hauling ability." );
+ConVar tf2v_disable_player_shadows( "tf2v_disable_player_shadows", "0", FCVAR_REPLICATED, "Disables rendering of player shadows regardless of client's graphical settings." );
 
 #define TF_SPY_STEALTH_BLINKTIME   0.3f
 #define TF_SPY_STEALTH_BLINKSCALE  0.85f
@@ -789,7 +789,7 @@ int CTFPlayerShared::GetMaxBuffedHealth( void )
 	float flBoostMax = m_pOuter->GetMaxHealth() * tf_max_health_boost.GetFloat();
 	if ( TFGameRules()->IsDeathmatch() )
 	{
-		flBoostMax = m_pOuter->GetMaxHealth() * tf2c_dm_max_health_boost.GetFloat();
+		flBoostMax = m_pOuter->GetMaxHealth() * tf2v_dm_max_health_boost.GetFloat();
 	}
 
 	int iRoundDown = floor( flBoostMax / 5 );
@@ -978,10 +978,10 @@ void CTFPlayerShared::ConditionGameRulesThink( void )
 		if ( m_pOuter->GetHealth() > m_pOuter->GetMaxHealth() )
 		{
 			float flBoostMaxAmount = GetMaxBuffedHealth() - m_pOuter->GetMaxHealth();
-			// TF2C DM has slower overheal decay
+			// tf2v DM has slower overheal decay
 			if ( TFGameRules()->GetGameType() == TF_GAMETYPE_DM )
 			{
-				m_flHealFraction += ( gpGlobals->frametime * ( flBoostMaxAmount / tf2c_dm_boost_drain_time.GetFloat() ) );
+				m_flHealFraction += ( gpGlobals->frametime * ( flBoostMaxAmount / tf2v_dm_boost_drain_time.GetFloat() ) );
 			}
 			else
 			{
@@ -3509,7 +3509,7 @@ bool CTFPlayer::CanPickupBuilding( CBaseObject *pObject )
 	if ( !pObject )
 		return false;
 
-	if ( !tf2c_building_hauling.GetBool() )
+	if ( !tf2v_building_hauling.GetBool() )
 		return false;
 
 	if ( m_Shared.IsLoser() )

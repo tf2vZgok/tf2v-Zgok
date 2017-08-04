@@ -68,13 +68,13 @@ void CTFRGBPanel::ApplySchemeSettings(vgui::IScheme *pScheme)
 		}
 	}
 
-	if ( tf2c_setmerccolor_r.GetFloat() == 0.0f && tf2c_setmerccolor_g.GetFloat() == 0.0f && tf2c_setmerccolor_b.GetFloat() == 0.0f )
+	if ( tf2v_setmerccolor_r.GetFloat() == 0.0f && tf2v_setmerccolor_g.GetFloat() == 0.0f && tf2v_setmerccolor_b.GetFloat() == 0.0f )
 	{
 		// 0 0 0 is default value which disables the proxy. So that means this is the first game launch.
 		// Let's generate a random color...
-		tf2c_setmerccolor_r.SetValue( RandomInt( 0, 255 ) );
-		tf2c_setmerccolor_g.SetValue( RandomInt( 0, 255 ) );
-		tf2c_setmerccolor_b.SetValue( RandomInt( 0, 255 ) );
+		tf2v_setmerccolor_r.SetValue( RandomInt( 0, 255 ) );
+		tf2v_setmerccolor_g.SetValue( RandomInt( 0, 255 ) );
+		tf2v_setmerccolor_b.SetValue( RandomInt( 0, 255 ) );
 		InvalidateLayout( true, true );
 	}
 }
@@ -93,10 +93,10 @@ void CTFRGBPanel::OnDataChanged()
 
 	m_pParticlesPanel->Update();
 	char chParticleName[64];
-	ConVar *tf2c_setmercparticle = cvar->FindVar("tf2c_setmercparticle");
-	if (!tf2c_setmercparticle)
+	ConVar *tf2v_setmercparticle = cvar->FindVar("tf2v_setmercparticle");
+	if (!tf2v_setmercparticle)
 		return;
-	int iParticleID = tf2c_setmercparticle->GetInt();
+	int iParticleID = tf2v_setmercparticle->GetInt();
 	if ( !iParticleID )
 		return;
 	Q_snprintf(chParticleName, sizeof(chParticleName), "dm_respawn_%02d", iParticleID);

@@ -16,7 +16,7 @@
 #include "voice_common.h"
 #include "vgui_avatarimage.h"
 
-#if defined (TF_CLASSIC_CLIENT)
+#if defined (TF_VINTAGE_CLIENT)
 #include "tf_gamerules.h"
 #include "c_tf_playerresource.h"
 #endif
@@ -360,7 +360,7 @@ void CHudVoiceStatus::Paint()
 		float oldAlphaMultiplier = surface()->DrawGetAlphaMultiplier();
 		surface()->DrawSetAlphaMultiplier(oldAlphaMultiplier * m_SpeakingList[i].fAlpha);
 
-#if defined(TF_CLASSIC_CLIENT)
+#if defined(TF_VINTAGE_CLIENT)
 		Color c;
 
 		if (TFGameRules() && TFGameRules()->IsDeathmatch())

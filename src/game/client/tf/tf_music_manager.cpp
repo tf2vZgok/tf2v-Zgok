@@ -37,11 +37,11 @@ static void MusicManagerToggle( IConVar *var, const char *pOldValue, float flOld
 	}
 }
 
-ConVar tf2c_music_manager( "tf2c_music_manager", "0", FCVAR_ARCHIVE, "Enable dynamic music in Deathmatch.", MusicManagerToggle );
-ConVar tf2c_music_manager_volume( "tf2c_music_manager_volume", "0.75", FCVAR_ARCHIVE );
-ConVar tf2c_music_manager_track( "tf2c_music_manager_track", "1", FCVAR_ARCHIVE, NULL, true, 1, true, 3 );
+ConVar tf2v_music_manager( "tf2v_music_manager", "0", FCVAR_ARCHIVE, "Enable dynamic music in Deathmatch.", MusicManagerToggle );
+ConVar tf2v_music_manager_volume( "tf2v_music_manager_volume", "0.75", FCVAR_ARCHIVE );
+ConVar tf2v_music_manager_track( "tf2v_music_manager_track", "1", FCVAR_ARCHIVE, NULL, true, 1, true, 3 );
 
-ConVar tf2c_music_manager_debug( "tf2c_music_manager_debug", "0", FCVAR_CHEAT );
+ConVar tf2v_music_manager_debug( "tf2v_music_manager_debug", "0", FCVAR_CHEAT );
 
 
 CTFMusicManager::CTFMusicManager() : CAutoGameSystemPerFrame( "CTFMusicManager" )
@@ -95,7 +95,7 @@ void CTFMusicManager::Update( float flFrameTime )
 		return;
 
 	// Watch track changes.
-	if ( tf2c_music_manager_track.GetInt() != m_iTrack )
+	if ( tf2v_music_manager_track.GetInt() != m_iTrack )
 	{
 		StopMusic();
 
@@ -186,7 +186,7 @@ void CTFMusicManager::Update( float flFrameTime )
 		// Setting volume to 0 pauses the music so we're bringing inactive tracks to inaudible levels instead.
 		pTrack->bPlay = m_flIntensity >= flTargetLevel;
 		float flOldVolume = controller.SoundGetVolume( pTrack->pSound );
-		float flVolume = tf2c_music_manager_volume.GetFloat();
+		float flVolume = tf2v_music_manager_volume.GetFloat();
 		float flDeltaTime = 0.5f;
 
 		if ( !pTrack->bPlay )
@@ -218,7 +218,7 @@ void CTFMusicManager::Update( float flFrameTime )
 //-----------------------------------------------------------------------------
 void CTFMusicManager::FireGameEvent( IGameEvent *event )
 {
-	if ( !tf2c_music_manager.GetBool() )
+	if ( !tf2v_music_manager.GetBool() )
 		return;
 
 	if ( !TFGameRules() || !TFGameRules()->IsDeathmatch() )
@@ -283,7 +283,7 @@ void CTFMusicManager::StartMusic( void )
 	{
 		SMusicTrack *pTrack = &m_Tracks[i];
 
-		m_iTrack = tf2c_music_manager_track.GetInt();
+		m_iTrack = tf2v_music_manager_track.GetInt();
 		char szSound[128];
 		V_snprintf( szSound, 128, "music/combat_%d/%d.mp3", m_iTrack, i );
 
@@ -331,7 +331,7 @@ void CTFMusicManager::StopMusic( bool bPlayEnding /*= false*/ )
 
 		EmitSound_t params;
 		params.m_pSoundName = szSound;
-		params.m_flVolume = tf2c_music_manager_volume.GetFloat();
+		params.m_flVolume = tf2v_music_manager_volume.GetFloat();
 		params.m_nChannel = CHAN_STATIC;
 
 		CLocalPlayerFilter filter;
@@ -427,7 +427,7 @@ void CHudMusicManager::ApplySchemeSettings( vgui::IScheme *pScheme )
 //-----------------------------------------------------------------------------
 bool CHudMusicManager::ShouldDraw( void )
 {
-	if ( tf2c_music_manager_debug.GetBool() )
+	if ( tf2v_music_manager_debug.GetBool() )
 		return true;
 
 	return false;

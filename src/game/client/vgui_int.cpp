@@ -32,7 +32,7 @@
 #include "tf_gamerules.h"
 #endif
 
-#if defined( TF_CLASSIC_CLIENT )
+#if defined( TF_VINTAGE_CLIENT )
 #include "tf_mainmenu.h"
 #include "tf_mainmenu_interface.h"
 #include "tier0/icommandline.h"
@@ -43,7 +43,7 @@ using namespace vgui;
 void MP3Player_Create( vgui::VPANEL parent );
 void MP3Player_Destroy();
 
-#if defined( TF_CLASSIC_CLIENT )
+#if defined( TF_VINTAGE_CLIENT )
 void OverrideMainMenu();
 #endif
 
@@ -216,7 +216,7 @@ void VGui_CreateGlobalPanels( void )
 	loadingdisc->Create( gameToolParent );
 	messagechars->Create( gameToolParent );
 
-#ifdef TF_CLASSIC_CLIENT
+#ifdef TF_VINTAGE_CLIENT
 	if ( CommandLine()->CheckParm( "-nonewmenu" ) == NULL )
 	{
 		MainMenu->Create( NULL );
@@ -260,7 +260,7 @@ void VGui_Shutdown()
 	loadingdisc->Destroy();
 	internalCenterPrint->Destroy();
 
-#if defined (TF_CLASSIC_CLIENT)
+#if defined (TF_VINTAGE_CLIENT)
 	//verPanel->Destroy();
 	//MainMenu->Destroy();
 #endif

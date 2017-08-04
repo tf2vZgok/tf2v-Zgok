@@ -41,7 +41,7 @@ void OverrideMainMenu()
 	}
 }
 
-CON_COMMAND(tf2c_mainmenu_reload, "Reload Main Menu")
+CON_COMMAND(tf2v_mainmenu_reload, "Reload Main Menu")
 {
 	MAINMENU_ROOT->InvalidatePanelsLayout(true, true);
 }

@@ -722,7 +722,7 @@ void CTFLoadoutPanel::SetWeaponPreset( int iClass, int iSlot, int iPreset )
 	if ( pPlayer )
 	{
 		char szCmd[64];
-		Q_snprintf( szCmd, sizeof( szCmd ), "weaponpresetclass %d %d %d", iClass, iSlot, iPreset ); //; tf2c_weaponset_show 0
+		Q_snprintf( szCmd, sizeof( szCmd ), "weaponpresetclass %d %d %d", iClass, iSlot, iPreset ); //; tf2v_weaponset_show 0
 		engine->ExecuteClientCmd( szCmd );
 	}
 

@@ -70,7 +70,7 @@
 #include "vote_controller.h"
 #include "ai_speech.h"
 
-#if defined ( USES_ECON_ITEMS ) || defined ( TF_CLASSIC )
+#if defined ( USES_ECON_ITEMS ) || defined ( TF_VINTAGE )
 #include "econ_wearable.h"
 #endif
 
@@ -106,7 +106,7 @@ static ConVar physicsshadowupdate_render( "physicsshadowupdate_render", "0" );
 bool IsInCommentaryMode( void );
 bool IsListeningToCommentary( void );
 
-#if defined( TF_CLASSIC )
+#if defined( TF_VINTAGE )
 // These values are below TF2 max speed of 520.
 // Live TF2 somehow ignores these values entirely when computing keyboard movement
 // yet you can still do precise movement with mouse and gamepad.
@@ -2487,7 +2487,7 @@ void CBasePlayer::ValidateCurrentObserverTarget( void )
 		}
 		else
 		{
-#if !defined( TF_DLL ) && !defined( TF_CLASSIC )
+#if !defined( TF_DLL ) && !defined( TF_VINTAGE )
 			// couldn't find new target, switch to temporary mode
 			if ( mp_forcecamera.GetInt() == OBS_ALLOW_ALL )
 			{
@@ -5045,7 +5045,7 @@ void CBasePlayer::Spawn( void )
 	m_vecSmoothedVelocity = vec3_origin;
 	InitVCollision( GetAbsOrigin(), GetAbsVelocity() );
 
-#if !( defined( TF_DLL ) || defined( TF_CLASSIC ) )
+#if !( defined( TF_DLL ) || defined( TF_VINTAGE ) )
 	IGameEvent *event = gameeventmanager->CreateEvent( "player_spawn" );
 	
 	if ( event )
@@ -5100,7 +5100,7 @@ void CBasePlayer::Precache( void )
 	enginesound->PrecacheSentenceGroup( "HEV" );
 
 	// These are always needed
-#if !defined ( TF_DLL ) && !defined ( TF_CLASSIC )
+#if !defined ( TF_DLL ) && !defined ( TF_VINTAGE )
 	PrecacheParticleSystem( "slime_splash_01" );
 	PrecacheParticleSystem( "slime_splash_02" );
 	PrecacheParticleSystem( "slime_splash_03" );
@@ -7396,7 +7396,7 @@ CBaseEntity *CBasePlayer::HasNamedPlayerItem( const char *pszItemName )
 	return NULL;
 }
 
-#if defined ( USES_ECON_ITEMS ) || defined ( TF_CLASSIC )
+#if defined ( USES_ECON_ITEMS ) || defined ( TF_VINTAGE )
 //-----------------------------------------------------------------------------
 // Purpose: Add this wearable to the players' equipment list.
 //-----------------------------------------------------------------------------
@@ -8025,7 +8025,7 @@ void SendProxy_CropFlagsToPlayerFlagBitsLength( const SendProp *pProp, const voi
 		SendPropArray	( SendPropEHandle( SENDINFO_ARRAY( m_hViewModel ) ), m_hViewModel ),
 		SendPropString	(SENDINFO(m_szLastPlaceName) ),
 
-#if defined ( USES_ECON_ITEMS ) || defined ( TF_CLASSIC )
+#if defined ( USES_ECON_ITEMS ) || defined ( TF_VINTAGE )
 		SendPropUtlVector( SENDINFO_UTLVECTOR( m_hMyWearables ), MAX_WEARABLES_SENT_FROM_SERVER, SendPropEHandle( NULL, 0 ) ),
 #endif // USES_ECON_ITEMS
 

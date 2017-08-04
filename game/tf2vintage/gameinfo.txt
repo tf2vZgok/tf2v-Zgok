@@ -9,7 +9,7 @@
 	nomodels 	1 
 	nohimodel 	1	
 	nocrosshair 	0 
-	GameData	"tf2c.fgd"
+	GameData	"tf2v.fgd"
 	hidden_maps 
 	{ 
 		"test_speakers"		1 
