@@ -32,9 +32,9 @@ vpc_osx binary
 *.res text
 *.rc text
 *.def text
-*.vmt text
 *.inl text
 *.asm text
+*.vmt text
 
 .gitignore text
 sourcesdk_def.mak text
